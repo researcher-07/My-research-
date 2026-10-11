@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: atlas-research
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --workers 2 --threads 4 --timeout 100 --bind 0.0.0.0:$PORT webapp:app
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: ATLAS_RATE_LIMIT_PER_MINUTE
+        value: "10"
